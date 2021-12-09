@@ -1,0 +1,83 @@
+#include <Servo.h>
+Servo servo;                                    
+int servoh = 0;
+int servoHigh = 160;
+int servoLow = 0;
+int ldrtop = 1;
+int ldrdown = 0; 
+int sensorVal; 
+int sensorVa;
+float Vout;
+const int TEMPPin3 = A2; 
+float corriente = 0.0; 
+float Res = 1000; 
+float corriente1 = 0.0;
+int panel;
+float potencia;
+float v= 0.0;
+float V;
+float a=0.0;
+int valor=3;
+String cadena;
+String mensaje;
+ void setup () 
+ {
+  Serial.begin(9600);
+  servo.attach(6); 
+  servo.write(0);
+  delay(100);
+ }
+void loop()
+{
+  servoh = servo.read();     
+  int top = analogRead(ldrtop);
+  int down = analogRead(ldrdown);
+  int avghor = (top + down) / 2; 
+  delay(500);
+  if (top < down)
+  {
+    servo.write(servoh +5);
+    if (servoh > servoHigh) 
+     { 
+      servoh = servoHigh;
+     }
+    delay(10);
+  }
+  else if (down < top)
+  {
+    servo.write(servoh -5);
+    if (servoh < servoLow)
+  {
+    servoh = servoLow;
+  }
+    delay(10);
+  }
+  else 
+  {
+    servo.write(servoh);
+  }
+  delay(50);
+{
+  float valueAdc = analogRead(TEMPPin3);
+  float volts = (valueAdc / 1023.0) * 5;
+  float celsius = volts * 100.00; 
+  Serial.print(celsius);
+  Serial.print(",");
+  delay(10);
+}
+{
+  for(int i=1;i<20;i++);{
+}
+
+}
+{
+panel=analogRead(A3);
+v= (panel*(5.0/1024.0));
+a= (panel*(5.0/1024.0));
+V= analogRead(avghor);
+potencia= ((v*a)*10);
+Serial.print(potencia);
+Serial.print(",");
+delay(10);
+}
+}
